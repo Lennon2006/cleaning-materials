@@ -1,25 +1,17 @@
 from flask import Flask, render_template, request, url_for
 from datetime import datetime
-import os
-print("Current working directory:", os.getcwd())
-print("Templates folder exists:", os.path.exists(os.path.join(os.getcwd(), 'templates')))
-print("home.html exists:", os.path.exists(os.path.join(os.getcwd(), 'templates', 'home.html')))
 
-app = Flask(__name__)
+# Explicitly set template folder (optional but can help)
+app = Flask(__name__, template_folder='templates')
 
-# Sample product data
-products = [
-    {"name": "All-Purpose Cleaner", "price": "N$50", "description": "Effective on all surfaces."},
-    {"name": "Glass Cleaner", "price": "N$40", "description": "Leaves glass streak-free."},
-    {"name": "Floor Cleaner", "price": "N$60", "description": "Perfect for all floor types."},
-]
-
+# Home page route
 @app.route('/')
 def home():
-   return render_template("home.html", datetime=datetime)
+    return render_template("home.html", datetime=datetime)
 
-@app.route("/products")
-def products():
+# Products page route (renamed to avoid name conflict)
+@app.route('/products')
+def products_page():
     products = [
         {
             "name": "All-Purpose Cleaner",
@@ -93,13 +85,12 @@ def products():
         }
     ]
 
-    # Extract unique categories for the category filter dropdown
+    # Extract unique categories (for future filters or display)
     categories = sorted({p['category'] for p in products})
 
     return render_template("products.html", products=products, categories=categories, datetime=datetime)
 
-
-
+# Contact page route
 @app.route("/contact", methods=["GET", "POST"])
 def contact():
     success = False
@@ -110,7 +101,7 @@ def contact():
         email = request.form.get("email")
         message = request.form.get("message")
 
-        # Log or process message
+        # Here you could add real email sending or database logging
         print(f"New message from {name} ({email}): {message}")
         success = True
 
