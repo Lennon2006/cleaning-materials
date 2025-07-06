@@ -1,5 +1,9 @@
 from flask import Flask, render_template, request, url_for
 from datetime import datetime
+import os
+print("Current working directory:", os.getcwd())
+print("Templates folder exists:", os.path.exists(os.path.join(os.getcwd(), 'templates')))
+print("home.html exists:", os.path.exists(os.path.join(os.getcwd(), 'templates', 'home.html')))
 
 app = Flask(__name__)
 
